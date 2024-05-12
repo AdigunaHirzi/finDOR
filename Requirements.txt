@@ -1,0 +1,10 @@
+#
+# This file is the requirement to run FinDOR
+# To update, run:
+# pip install -r Requirements.txt
+
+requests
+argparse
+pyfiglet
+colorama
+mitmproxy

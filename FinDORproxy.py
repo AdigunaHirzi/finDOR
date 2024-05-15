@@ -10,6 +10,7 @@ class IDORDetector:
     def __init__(self):
         self.patternGET1 = re.compile(r'(?:[?&]|/)([a-zA-Z]+)?[a-zA-Z_]*[id|ID|name|NAME|nama|NAMA|user|USER]=(\w+)|/(\d+)(?:\.\w+)?/?$', re.IGNORECASE)
         self.patternGET2 = re.compile(r'/(\d+)', re.IGNORECASE)
+        self.patternGET3 = re.compile(r'[?&/](?:[a-zA-Z_]*[a-zA-Z])(?:=|/)([a-zA-Z0-9_]+)', re.IGNORECASE)
 
         self.paternPOST1 = re.compile(r'"[a-zA-Z_]*[Id]":"([^"]+)"', re.IGNORECASE)
         self.paternPOST2 = re.compile(r'[a-zA-Z_]*[Id]=([^"&]+)', re.IGNORECASE)
@@ -28,6 +29,9 @@ class IDORDetector:
                 self.idor_count += 1
                 self.save_get_request_to_file(flow)
             elif flow.request.method == "GET" and self.patternGET2.search(flow.request.url):
+                self.idor_count += 1
+                self.save_get_request_to_file(flow)
+            elif flow.request.method == "GET" and self.patternGET3.search(flow.request.url):
                 self.idor_count += 1
                 self.save_get_request_to_file(flow)
             elif flow.request.method == "POST" and self.paternPOST1.search(flow.request.text):
